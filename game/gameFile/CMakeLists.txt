@@ -1,0 +1,1 @@
+add_executable(game main.cpp declaration.hpp redRawFrame.cpp update.cpp pollEvents.cpp init.cpp mous.cpp upDateCar.cpp collisionCheck.cpp goCarFunc.cpp)

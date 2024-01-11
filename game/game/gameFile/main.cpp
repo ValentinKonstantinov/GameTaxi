@@ -11,6 +11,7 @@ sf::Vector2f toEuclidean(float radius, float angle)
 
 int main()
 {
+    cout << "main" << endl;
     constexpr unsigned WINDOW_WIDTH = 800;
     constexpr unsigned WINDOW_HEIGHT = 600;
     sf::Clock clock;
@@ -19,24 +20,30 @@ int main()
     sf::RenderWindow window(
         sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}),
         "Arrow follows mouse", sf::Style::Default, settings);
-
     car car(clock);
+    cout << "RenderWindow window" << endl;
     destination destination(clock);
     passenger passenger[100];
-    obstruction arreyObstruction[100];
+    mapStuct levelMap;
     sf::Vector2f mousePosition;
     sf::Vector2f mouseClikPosition;
-    initLevel(arreyObstruction);
-    initPassenger(passenger, arreyObstruction);
+    cout << "struct" << endl;
+    initLevel(levelMap);
+    initPassenger(passenger, levelMap);
     initDestination(destination);
 
     initCar(car, clock);
+    cout << "init level" << endl;
     bool gogame = false;
     while (window.isOpen())
     {
+
         pollEvents(window, mousePosition, mouseClikPosition);
-        update(mousePosition, mouseClikPosition, car, passenger, destination, arreyObstruction, clock);
-        redrawFrame(window, car, passenger, destination, arreyObstruction);
+        cout << "pollEvents" << endl;
+        update(mousePosition, mouseClikPosition, car, passenger, destination, levelMap, clock);
+        cout << "update" << endl;
+        redrawFrame(window, car, passenger, destination, levelMap);
+        cout << "redrawFrame" << endl;
         bool gogame = false;
         for (int i = 0; i < 100; ++i)
         {
@@ -47,8 +54,10 @@ int main()
         };
         if (!gogame)
         {
+            cout << gogame << endl;
             window.close();
             cout << car.money << endl;
-        }
+        };
     };
+    cout << "end correct" << endl;
 }

@@ -16,7 +16,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/init.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/main.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/mous.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/pollEvents.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/redRawFrame.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/redrawFrame.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/update.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/upDateCar.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/collisionCheckInitPass.cpp

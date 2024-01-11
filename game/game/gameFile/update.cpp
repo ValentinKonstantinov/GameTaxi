@@ -1,12 +1,10 @@
 #include "declaration.hpp"
 
-void update(const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, car &car, passenger passenger[], destination &destination, obstruction arreyObstruction[], sf::Clock &clock)
+void update(const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, car &car, passenger passenger[], destination &destination, mapStuct &levelMap, sf::Clock &clock)
 {
     //passenger.sprite.setPosition(mouseClikPosition);
     // passenger.position = mouseClikPosition;
     sf::Vector2f delta;
-    //passenger passengerTarget;
-
     if (car.withAPassenger == 0)
     {
         int passengerNumber = 0;
@@ -33,5 +31,5 @@ void update(const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, 
     //distance = delta.x * delta.x + delta.y * delta.y;
     //distance = sqrt(distance);
 
-    updatecar(car, clock, delta, arreyObstruction, passenger);
+    updatecar(car, clock, delta, levelMap, passenger);
 }

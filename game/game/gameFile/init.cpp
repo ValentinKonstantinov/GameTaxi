@@ -15,6 +15,43 @@ void initDestination(destination &destination)
     destination.sprite.setPosition(destination.position);
 }
 
+void initLevel(mapStuct &levelMap)
+{
+    static sf::Texture texture;
+    if (!texture.loadFromFile(".\\texture\\level1.png"))
+    {
+        std::cout << "not texture map1" << std::endl;
+    };
+    levelMap.sprite.setTexture(texture);
+    float pozX, pozY, sizeX, sizeY;
+    pozX = 0;
+    pozY = 0;
+    levelMap.sprite.setPosition(sf::Vector2f(pozX, pozY));
+
+    ifstream level1Map;
+    level1Map.open(".\\level\\Level1Map.txt");
+    for (int i = 0; i < 801; ++i)
+    {
+        for (int j = 0; j < 601; ++j)
+        {
+            levelMap.arreyMapStatusPosition[i][j] = 0;
+        }
+    };
+
+    do
+    {
+        level1Map >> sizeX >> sizeY >> pozX >> pozY;
+        pozY = pozY + 100;
+        for (int i = pozX; i <= (pozX + sizeX); ++i)
+        {
+            for (int j = pozY; j <= (pozY + sizeY); ++j)
+            {
+                levelMap.arreyMapStatusPosition[i][j] = 1;
+            }
+        };
+    } while (!level1Map.eof());
+}
+/*
 void initLevel(obstruction arreyObstruction[])
 {
     ifstream level1Obstruction;
@@ -101,8 +138,8 @@ void initLevel(obstruction arreyObstruction[])
     } while (!level1Obstruction.eof());
     level1Obstruction.close();
 }
-
-void initPassenger(passenger passenger[], obstruction arreyObstruction[])
+*/
+void initPassenger(passenger passenger[], mapStuct &levelMap)
 {
     ifstream level1Passenger;
     level1Passenger.open(".\\level\\fileLevel1Passenger.txt");
@@ -118,22 +155,23 @@ void initPassenger(passenger passenger[], obstruction arreyObstruction[])
     {
         float pozX, pozY;
         passenger[i].activation = 1;
-        passenger[i].size = {20, 40};
+        passenger[i].size = {25, 25};
 
         do
         {
             passenger[i].collision = 0;
-            pozX = 100 + rand() % 600;
-            pozY = 100 + rand() % 400;
+            pozX = 50 + rand() % 750;
+            pozY = 100 + rand() % 500;
             passenger[i].position = {pozX, pozY};
-            collisionCheckInitPassenger(passenger[i], arreyObstruction);
-        } while (passenger[i].collision != 0);
+            collisionCheckInitPassenger(passenger[i], levelMap);
+        } while (passenger[i].collision != 1);
         passenger[i].money = 10 + rand() % 10;
         passenger[i].sprite.setPosition(passenger[i].position);
         passenger[i].sprite.setTexture(texture);
         passenger[i].sprite.setColor(sf::Color::Red);
-        passenger[i].sprite.setOrigin(sf::Vector2f(10, 20));
+        passenger[i].sprite.setOrigin(sf::Vector2f(12, 12));
     };
+    level1Passenger.close();
 }
 
 void initCar(car &car, sf::Clock &clock) //инициализирует структуру
@@ -143,7 +181,7 @@ void initCar(car &car, sf::Clock &clock) //инициализирует стру
         std::cout << "not texture car" << std::endl;
     }
     car.sprite.setTexture(car.texture);
-    car.position = {500, 100};
+    car.position = {25, 475};
     car.size = {50, 20};
     car.rotation = 0;
     car.sprite.setOrigin(sf::Vector2f(25, 10));

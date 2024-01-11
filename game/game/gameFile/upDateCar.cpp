@@ -1,6 +1,6 @@
 #include "declaration.hpp"
 
-void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arreyObstruction[], passenger passenger[])
+void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, mapStuct &levelMap, passenger passenger[])
 {
     //const sf::Vector2f headOffset = toEuclidean(distance, car.rotation);
     float time = clock.restart().asSeconds();
@@ -18,7 +18,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
             if (delta.x < 0)
             {
                 goCarToTheLeft(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.position = positionCarPrevious;
@@ -29,7 +29,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
             else
             {
                 goCarToTheRight(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.collision = 2;
@@ -44,7 +44,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
             if (delta.y < 0)
             {
                 goCarToTheUp(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.position = positionCarPrevious;
@@ -54,7 +54,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
             else
             {
                 goCarToTheDown(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.collision = 3;
@@ -71,7 +71,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
         if (car.collision == 1)
         {
             goCarToTheLeft(car, T);
-            collisionCheck(car, arreyObstruction);
+            collisionCheck(car, levelMap);
             if (car.collision == 1)
             {
                 car.position = positionCarPrevious;
@@ -83,7 +83,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
                 positionCarPrevious = car.position;
                 rotationCarPrevious = car.rotation;
                 goCarToTheUp(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.position = positionCarPrevious;
@@ -95,7 +95,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
         if (car.collision == 4)
         {
             goCarToTheDown(car, T);
-            collisionCheck(car, arreyObstruction);
+            collisionCheck(car, levelMap);
             if (car.collision == 1)
             {
                 car.position = positionCarPrevious;
@@ -109,7 +109,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
                 rotationCarPrevious = car.rotation;
                 goCarToTheLeft(car, T);
 
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.position = positionCarPrevious;
@@ -121,7 +121,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
         if (car.collision == 3)
         {
             goCarToTheRight(car, T);
-            collisionCheck(car, arreyObstruction);
+            collisionCheck(car, levelMap);
             if (car.collision == 1)
             {
                 car.position = positionCarPrevious;
@@ -134,7 +134,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
                 positionCarPrevious = car.position;
                 rotationCarPrevious = car.rotation;
                 goCarToTheDown(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.position = positionCarPrevious;
@@ -147,7 +147,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
         if (car.collision == 2)
         {
             goCarToTheUp(car, T);
-            collisionCheck(car, arreyObstruction);
+            collisionCheck(car, levelMap);
             if (car.collision == 1)
             {
                 car.position = positionCarPrevious;
@@ -159,7 +159,7 @@ void updatecar(car &car, sf::Clock &clock, sf::Vector2f &delta, obstruction arre
                 positionCarPrevious = car.position;
                 rotationCarPrevious = car.rotation;
                 goCarToTheRight(car, T);
-                collisionCheck(car, arreyObstruction);
+                collisionCheck(car, levelMap);
                 if (car.collision == 1)
                 {
                     car.position = positionCarPrevious;

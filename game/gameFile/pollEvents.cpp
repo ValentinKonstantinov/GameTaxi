@@ -1,15 +1,6 @@
-#include <SFML/Graphics.hpp>
-#include <cmath>
-#include <iostream>
-#include <algorithm>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <array>
-#include <fstream>
-using namespace std;
 #include "declaration.hpp"
-void pollEvents(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition)
+
+void pollEvents(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition, char &keyPressed)
 {
     sf::Event event;
     while (window.pollEvent(event))
@@ -25,8 +16,11 @@ void pollEvents(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vec
         case sf::Event::MouseButtonPressed:
             onMouseClick(event.mouseButton, mouseClikPosition);
             break;
+        case sf::Event::KeyPressed:
+            keyPressed = event.key.code + 65;
+
         default:
             break;
         }
-    }
+    };
 }

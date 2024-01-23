@@ -11,7 +11,6 @@ sf::Vector2f toEuclidean(float radius, float angle)
 
 int main()
 {
-    cout << "main" << endl;
     constexpr unsigned WINDOW_WIDTH = 800;
     constexpr unsigned WINDOW_HEIGHT = 600;
     sf::Clock clock;
@@ -20,44 +19,48 @@ int main()
     sf::RenderWindow window(
         sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}),
         "Arrow follows mouse", sf::Style::Default, settings);
+    car userCar(clock);
     car car(clock);
-    cout << "RenderWindow window" << endl;
+    sf::Font fontName;
+    if (!fontName.loadFromFile(".\\font\\ArialRegular.ttf"))
+    {
+        cout << "no ArialRegular" << endl;
+    }
     destination destination(clock);
     passenger passenger[100];
-    mapStuct levelMap;
+    levelMap levelMap;
+    obstruction arreyObstruction[100];
     sf::Vector2f mousePosition;
     sf::Vector2f mouseClikPosition;
-    cout << "struct" << endl;
-    initLevel(levelMap);
-    initPassenger(passenger, levelMap);
+    char keyPressed;
+    oilStruct oil;
+    initOilStruct(oil);
+    initLevel(levelMap, arreyObstruction);
+    initPassenger(passenger, arreyObstruction);
     initDestination(destination);
+    initUserCar(userCar, fontName);
+    initCar(car, fontName);
 
-    initCar(car, clock);
-    cout << "init level" << endl;
-    bool gogame = false;
+    bool endGame = false;
     while (window.isOpen())
     {
-
-        pollEvents(window, mousePosition, mouseClikPosition);
-        cout << "pollEvents" << endl;
-        update(mousePosition, mouseClikPosition, car, passenger, destination, levelMap, clock);
-        cout << "update" << endl;
-        redrawFrame(window, car, passenger, destination, levelMap);
-        cout << "redrawFrame" << endl;
-        bool gogame = false;
+        pollEvents(window, mousePosition, mouseClikPosition, keyPressed);
+        update(userCar, mousePosition, mouseClikPosition, keyPressed, car, passenger, destination, arreyObstruction, clock, oil);
+        redrawFrame(userCar, window, car, passenger, destination, levelMap, oil);
+        endGame = true;
         for (int i = 0; i < 100; ++i)
         {
             if (passenger[i].activation != 0)
             {
-                gogame = true;
+                endGame = false;
             };
         };
-        if (!gogame)
+        collisionCarAndUserCar(userCar, endGame, car);
+        if (endGame)
         {
-            cout << gogame << endl;
             window.close();
             cout << car.money << endl;
-        };
+            cout << userCar.money << endl;
+        }
     };
-    cout << "end correct" << endl;
 }

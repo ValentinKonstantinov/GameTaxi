@@ -1,71 +1,6 @@
-#include <SFML/Graphics.hpp>
-#include <cmath>
-#include <iostream>
-#include <algorithm>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <array>
-#include <fstream>
-using namespace std;
 #include "declaration.hpp"
 
 float distance = 0;
-
-struct obstruction
-{
-    sf::Texture texture;
-    sf::Sprite sprite;
-    sf::Vector2f position;
-    sf::Vector2f size;
-};
-
-struct car
-{
-    sf::Clock &clock;
-    sf::Texture texture;
-    sf::Vector2f size;
-    sf::Sprite sprite;
-
-    sf::Vector2f position;
-    float rotation = 0;
-    float withAPassenger = 0;
-    car(sf::Clock &clock)
-        : clock(clock){};
-    float collision;
-};
-
-struct destination
-{
-    sf::Clock &clock;
-    sf::Texture texture;
-
-    sf::Sprite sprite;
-
-    sf::Vector2f position;
-    float rotation = 0;
-
-    destination(sf::Clock &clock)
-        : clock(clock)
-    {
-    }
-};
-
-struct passenger
-{
-    sf::Clock &clock;
-    sf::Texture texture;
-
-    sf::Sprite sprite;
-
-    sf::Vector2f position;
-    float rotation = 0;
-
-    passenger(sf::Clock &clock)
-        : clock(clock)
-    {
-    }
-};
 
 sf::Vector2f toEuclidean(float radius, float angle)
 {
@@ -73,6 +8,7 @@ sf::Vector2f toEuclidean(float radius, float angle)
         static_cast<float>(radius * cos(angle)),
         static_cast<float>(radius * sin(angle))};
 };
+
 int main()
 {
     constexpr unsigned WINDOW_WIDTH = 800;
@@ -83,23 +19,48 @@ int main()
     sf::RenderWindow window(
         sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}),
         "Arrow follows mouse", sf::Style::Default, settings);
-
+    car userCar(clock);
     car car(clock);
+    sf::Font fontName;
+    if (!fontName.loadFromFile(".\\font\\ArialRegular.ttf"))
+    {
+        cout << "no ArialRegular" << endl;
+    }
     destination destination(clock);
-    passenger passenger(clock);
+    passenger passenger[100];
+    levelMap levelMap;
     obstruction arreyObstruction[100];
     sf::Vector2f mousePosition;
     sf::Vector2f mouseClikPosition;
-    initLevel(arreyObstruction);
-    initPassenger(passenger);
+    char keyPressed;
+    oilStruct oil;
+    initOilStruct(oil);
+    initLevel(levelMap, arreyObstruction);
+    initPassenger(passenger, arreyObstruction);
     initDestination(destination);
+    initUserCar(userCar, fontName);
+    initCar(car, fontName);
 
-    initCar(car, clock);
-
+    bool endGame = false;
     while (window.isOpen())
     {
-        pollEvents(window, mousePosition, mouseClikPosition);
-        update(mousePosition, mouseClikPosition, car, passenger, destination, arreyObstruction, clock);
-        redrawFrame(window, car, passenger, destination, arreyObstruction);
-    }
+        pollEvents(window, mousePosition, mouseClikPosition, keyPressed);
+        update(userCar, mousePosition, mouseClikPosition, keyPressed, car, passenger, destination, arreyObstruction, clock, oil);
+        redrawFrame(userCar, window, car, passenger, destination, levelMap, oil);
+        endGame = true;
+        for (int i = 0; i < 100; ++i)
+        {
+            if (passenger[i].activation != 0)
+            {
+                endGame = false;
+            };
+        };
+        collisionCarAndUserCar(userCar, endGame, car);
+        if (endGame)
+        {
+            window.close();
+            cout << car.money << endl;
+            cout << userCar.money << endl;
+        }
+    };
 }

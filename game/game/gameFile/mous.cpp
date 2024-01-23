@@ -13,3 +13,9 @@ void onMouseClick(const sf::Event::MouseButtonEvent &event, sf::Vector2f &mouseC
 
     mouseClikPosition = {float(event.x), float(event.y)};
 }
+/*
+void onKeyPressed(sf::Event::KeyPressed &event.key, char &keyPressed)
+{
+    std::cout << event.key << std::endl;
+    keyPressed = event.key;
+}*/

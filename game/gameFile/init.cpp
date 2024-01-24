@@ -10,8 +10,8 @@ void initDestination(destination &destination)
         std::cout << "not texture destination" << std::endl;
     }
     destination.sprite.setTexture(texture);
-    destination.sprite.setOrigin(sf::Vector2f(80, 80));
-    destination.position = {50, 100};
+    destination.sprite.setOrigin(sf::Vector2f(0, 80));
+    destination.position = {0, 100};
     destination.sprite.setPosition(destination.position);
 }
 
@@ -83,7 +83,7 @@ void initPassenger(passenger passenger[], obstruction arreyObstruction[])
             passenger[i].sprite.setColor(sf::Color::Green);
             passenger[i].drive = {10, 10};
         };
-        passenger[i].sprite.setOrigin(sf::Vector2f(10, 20));
+        //passenger[i].sprite.setOrigin(sf::Vector2f(10, 20));
     };
     level1Passenger.close();
 };
@@ -103,16 +103,16 @@ void initCar(car &car, sf::Font &fontName) //инициализирует стр
     car.size = {40, 20};
     //car.sprite.setOrigin(sf::Vector2f(20, 12));
     car.collision = 0;
-    car.speed = 100;
-    car.name.setFont(fontName);
+    car.speed = 80;
+    car.menuText.setFont(fontName);
     std::string str;
     str = std::to_string(car.money);
     str = "stupid:" + str + "$";
-    car.name.setString(str);
-    car.name.setCharacterSize(30);
-    car.name.setStyle(sf::Text::Bold);
-    car.name.setFillColor(sf::Color::Red);
-    car.name.setPosition(100, 0);
+    car.menuText.setString(str);
+    car.menuText.setCharacterSize(30);
+    car.menuText.setStyle(sf::Text::Bold);
+    car.menuText.setFillColor(sf::Color::Red);
+    car.menuText.setPosition(100, 0);
 };
 
 void initUserCar(car &userCar, sf::Font &fontName) //инициализирует структуру
@@ -130,15 +130,15 @@ void initUserCar(car &userCar, sf::Font &fontName) //инициализируе�
     //userCar.sprite.setOrigin(sf::Vector2f(20, 12));
     userCar.collision = 0;
     userCar.speed = 100;
-    userCar.name.setFont(fontName);
+    userCar.menuText.setFont(fontName);
     std::string str;
     str = std::to_string(userCar.money);
     str = "user:" + str + "$";
-    userCar.name.setString(str);
-    userCar.name.setCharacterSize(30);
-    userCar.name.setStyle(sf::Text::Bold);
-    userCar.name.setFillColor(sf::Color::Red);
-    userCar.name.setPosition(100, 40);
+    userCar.menuText.setString(str);
+    userCar.menuText.setCharacterSize(30);
+    userCar.menuText.setStyle(sf::Text::Bold);
+    userCar.menuText.setFillColor(sf::Color::Red);
+    userCar.menuText.setPosition(100, 40);
 };
 
 void initOilStruct(oilStruct &oil)
@@ -152,4 +152,15 @@ void initOilStruct(oilStruct &oil)
     oil.position = {250, 250};
     oil.timeOil = 0;
     oil.activation = 0;
+};
+
+void initPreviewMenu(menu &previewMenu)
+{
+    if (!previewMenu.texture.loadFromFile(".\\texture\\previewMenu.png"))
+    {
+        std::cout << "not texture previewMenu" << std::endl;
+    };
+
+    previewMenu.sprite.setTexture(previewMenu.texture);
+    previewMenu.sprite.setPosition(0, 0);
 }

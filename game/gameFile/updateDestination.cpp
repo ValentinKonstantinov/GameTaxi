@@ -17,7 +17,7 @@ void updateDestination(float &time, destination &destination)
     }
 };
 
-void udateOil(car &userCar, oilStruct &oil, car &car, obstruction arreyObstruction[], float &time)
+void udateOil(car &algoCar, car &userCar, car &userCar2, oilStruct &oil, car &car, obstruction arreyObstruction[], float &time)
 {
     if (oil.timeOil > 0)
     {
@@ -45,7 +45,15 @@ void udateOil(car &userCar, oilStruct &oil, car &car, obstruction arreyObstructi
     };
     if ((oil.activation == 1) || (oil.activation == 3))
     {
+        collisionCheckOilAndCar(oil, userCar2);
+    };
+    if ((oil.activation == 1) || (oil.activation == 3))
+    {
         collisionCheckOilAndCar(oil, car);
+    };
+    if ((oil.activation == 1) || (oil.activation == 3))
+    {
+        collisionCheckOilAndCar(oil, algoCar);
     };
     if ((userCar.keyPressed == 'F') && (userCar.availabilityOil == 1))
     {
@@ -53,7 +61,15 @@ void udateOil(car &userCar, oilStruct &oil, car &car, obstruction arreyObstructi
         oil.activation = 3;
         oil.sprite.setPosition(userCar.sprite.getPosition());
         oil.sprite.setTextureRect(sf::IntRect(50, 0, 50, 50));
-        oil.timeOil = 4;
+        oil.timeOil = 3;
+    };
+    if ((userCar2.keyPressed == 'L') && (userCar2.availabilityOil == 1))
+    {
+        userCar2.availabilityOil = 0;
+        oil.activation = 3;
+        oil.sprite.setPosition(userCar2.sprite.getPosition());
+        oil.sprite.setTextureRect(sf::IntRect(50, 0, 50, 50));
+        oil.timeOil = 3;
     };
     if (car.availabilityOil == 1)
     {
@@ -61,6 +77,6 @@ void udateOil(car &userCar, oilStruct &oil, car &car, obstruction arreyObstructi
         oil.activation = 3;
         oil.sprite.setPosition(car.sprite.getPosition());
         oil.sprite.setTextureRect(sf::IntRect(50, 0, 50, 50));
-        oil.timeOil = 6;
+        oil.timeOil = 5;
     };
 };

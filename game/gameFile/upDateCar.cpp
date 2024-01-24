@@ -182,5 +182,45 @@ void updatecar(car &car, float time, sf::Vector2f &delta, obstruction arreyObstr
                 }
             }
         }
+    }
+};
+
+void carLogica(car &car, sf::Vector2f &delta, passenger passenger[], destination &destination)
+{
+    std::string str;
+    if (car.withAPassenger == 0)
+    {
+        int passengerNumber = 0;
+        do
+        {
+            ++passengerNumber;
+        } while ((passenger[passengerNumber - 1].activation != 1) && (passengerNumber < 100));
+        --passengerNumber;
+        delta = passenger[passengerNumber].position - car.position;
+        if ((fabs(round(delta.x)) <= 50) && (fabs(round(delta.y)) <= 50))
+        {
+            car.passengerMoney = passenger[passengerNumber].money;
+            car.passengerNumber = passengerNumber;
+            car.withAPassenger = 1;
+            passenger[car.passengerNumber].activation = 2;
+        };
+    }
+    else
+    {
+        delta = destination.position - car.position;
+        if ((fabs(round(delta.x)) <= 60) && (fabs(round(delta.y)) <= 60))
+        {
+            car.money = car.money + car.passengerMoney;
+            car.passengerMoney = 0;
+            passenger[car.passengerNumber].activation = 0;
+            car.withAPassenger = 0;
+        };
     };
+    str = std::to_string(car.money);
+    str = "stupidTaxi:" + str + "$";
+    if (car.availabilityOil == 1)
+    {
+        str = str + " OIL";
+    };
+    car.menuText.setString(str);
 }

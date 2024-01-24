@@ -20,11 +20,29 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include "SFML/Audio.hpp"
+#include "SFML/Audio/Music.hpp"
+#include "SFML/Audio/Listener.hpp"
+#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Export.hpp>
+#include <SFML/Audio/SoundStream.hpp>
+#include <SFML/Audio/InputSoundFile.hpp>
+#include <SFML/System/Mutex.hpp>
+#include <SFML/System/Time.hpp>
+#include <string>
+#include <vector>
 using namespace std;
+struct menu
+{
+    sf::Texture texture;
+    sf::Sprite sprite;
+};
+
 struct levelMap
 {
     sf::Texture texture;
     sf::Sprite sprite;
+    int state = 0;
 };
 
 struct obstruction
@@ -48,10 +66,12 @@ struct car
     int passengerNumber = -1;
     int passengerMoney = 0;
     float speed;
-    sf::Text name;
+    sf::Text menuText;
+    std::string userName;
     int availabilityOil = 0;
     float timeOil = 0;
     char keyPressed;
+    bool activation = true;
 };
 
 struct destination
@@ -94,8 +114,8 @@ struct oilStruct
     float collision;
 };
 
-void redrawFrame(car &userCar, sf::RenderWindow &window, car &car, passenger passenger[], destination &destination, levelMap &levelMap, oilStruct &oil);
-void update(car &userCar, const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, char &keyPressed, car &car, passenger passenger[], destination &destination, obstruction arreyObstruction[], sf::Clock &clock, oilStruct &oil);
+void redrawFrame(car &algoCar, car &userCar, car &userCar2, sf::RenderWindow &window, car &car, passenger passenger[], destination &destination, levelMap &levelMap, oilStruct &oil);
+void update(car &algoCar, car &userCar, car &userCar2, const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, char &keyPressed, car &car, passenger passenger[], destination &destination, obstruction arreyObstruction[], sf::Clock &clock, oilStruct &oil);
 void pollEvents(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition, char &keyPressed);
 void initDestination(destination &destination);
 void initLevel(levelMap &levelMap, obstruction arreyObstruction[]);
@@ -106,7 +126,7 @@ void onMouseMove(const sf::Event::MouseMoveEvent &event, sf::Vector2f &mousePosi
 void onMouseClick(const sf::Event::MouseButtonEvent &event, sf::Vector2f &mouseClikPosition);
 //void onKeyPressed(sf::Event::KeyPressed &event.key, char &keyPressed);
 void updatecar(car &car, float time, sf::Vector2f &delta, obstruction arreyObstruction[], passenger passenger[]);
-void updateUserCar(car &userCar, float time, char &keyPressed, obstruction arreyObstruction[], passenger passenger[]);
+void updateUserCar(car &userCar, car &userCar2, float time, char &keyPressed, obstruction arreyObstruction[], passenger passenger[]);
 void updatePassenger(float time, obstruction arreyObstruction[], passenger passenger[]);
 void collisionCheck(car &car, obstruction arreyObstruction[]);
 void goCarToTheLeft(car &car, float T);
@@ -117,6 +137,15 @@ void collisionCheckInitPassenger(passenger &passenger, obstruction arreyObstruct
 void collisionCarAndUserCar(car &userCar, bool &endGame, car &car);
 void updateDestination(float &time, destination &destination);
 void initOilStruct(oilStruct &oil);
-void udateOil(car &userCar, oilStruct &oil, car &car, obstruction arreyObstruction[], float &time);
+void udateOil(car &algoCar, car &userCar, car &userCar2, oilStruct &oil, car &car, obstruction arreyObstruction[], float &time);
 void collisionCheckInitOil(oilStruct &oil, obstruction arreyObstruction[]);
 void collisionCheckOilAndCar(oilStruct &oil, car &car);
+void userCarLogica(car &userCar, passenger passenger[], destination &destination);
+void carLogica(car &car, sf::Vector2f &delta, passenger passenger[], destination &destination);
+void initPreviewMenu(menu &previewMenu);
+void pollEventsMenu(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition, char &keyPressed);
+void algoCarLogica(car &car, sf::Vector2i &targetDrive, passenger passenger[], destination &destination, oilStruct &oil, obstruction arreyObstruction[]);
+void algoDijkstra(sf::Vector2f end, sf::Vector2i &targetDrive, sf::Vector2f start);
+void simplePathfindingAlgoritm(int ADJACENCY_MATRIX[][640], int &START, int &END, sf::Vector2i &targetDrive);
+void updateAlgoCar(car &car, float time, sf::Vector2i &targetDrive, passenger passenger[], obstruction arreyObstruction[]);
+void collisionCheckAlgoCar(car &car, obstruction arreyObstruction[]);

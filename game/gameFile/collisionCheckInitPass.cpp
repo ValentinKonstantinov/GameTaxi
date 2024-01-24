@@ -4,9 +4,9 @@ void collisionCheckInitPassenger(passenger &passenger, obstruction arreyObstruct
 {
     sf::Vector2f coordinatesObstr, coordinatesCar;
     passenger.collision = 0;
-    if ((passenger.position.x < 10) || (passenger.position.x > 790) || (passenger.position.y < 100) || (passenger.position.y > 590))
+    if ((passenger.position.x < 10) || (passenger.position.x > 790) || (passenger.position.y < 110) || (passenger.position.y > 590))
     {
-        passenger.collision = 0;
+        passenger.collision = 3;
     }
     else
     {

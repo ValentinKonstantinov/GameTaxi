@@ -25,6 +25,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/updatePassenger.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/updateDestination.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/updateAlgoCar.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/algoDijkstra.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/game/gameFile/checkEndGame.cpp
 )
 
 target_include_directories(app PRIVATE ${SFML_INCLUDE_DIR})

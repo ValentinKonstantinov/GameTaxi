@@ -76,6 +76,36 @@ void collisionCheckOilAndCar(oilStruct &oil, car &car)
     }
 };
 
+void collisionCheckPetrolAndCar(petrolStruct &petrol, car &car)
+{
+    float carX = car.sprite.getPosition().x;
+    float carY = car.sprite.getPosition().y;
+    float carUserX = petrol.sprite.getPosition().x;
+    float carUserY = petrol.sprite.getPosition().y;
+    //cout << "collisionCarAndUserCar" << endl;
+    //sf::Vector2f coordinatesUserCar, coordinatesCar;
+    for (float i = carX; i <= carX + 40; ++i)
+    {
+        for (float j = carY; j <= carY + 40; ++j)
+        {
+            for (float x = carUserX; x <= carUserX + 40; ++x)
+            {
+                for (float y = carUserY; y <= carUserY + 40; ++y)
+                {
+                    if ((x - i < 1) && (x - i > -1) && (y - j < 1) && (y - j > -1))
+                    {
+                        petrol.activation = 0;
+                    }
+                }
+            }
+        }
+    };
+    if (petrol.activation == 0)
+    {
+        car.speed += petrol.addingSpeed;
+    }
+};
+
 void collisionCheckAlgoCar(car &car, obstruction arreyObstruction[]) //виснет, слишком трудоемко?
 {
     //return false;

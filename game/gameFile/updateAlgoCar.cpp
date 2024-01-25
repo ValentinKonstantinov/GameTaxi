@@ -53,41 +53,53 @@ void algoCarLogica(car &car, sf::Vector2i &targetDrive, passenger passenger[], d
         if (passenger[passengerNumber].activation == 1)
         {
             end = passenger[passengerNumber].position;
+            int X = static_cast<int>(car.position.x);
+            int Y = static_cast<int>(car.position.y);
+            targetDrive = {X, Y};
+            if (end.x > 50)
+            {
+                end.x = end.x - 48;
+            };
+            algoDijkstra(end, targetDrive, start);
+            if (end.y < 550)
+            {
+                end.y = end.y + 48;
+            }
+            algoDijkstra(end, targetDrive, start);
         }
         else
         {
-            end = car.position;
+            end = {0, 550};
+            algoDijkstra(end, targetDrive, start);
         };
-        targetDrive = {0, 550};
+
         /* if (end.x < 750)
         {
             end.x = end.x + 48;
         };
         algoDijkstra(end, targetDrive, start);*/
-        if (end.x > 50)
-        {
-            end.x = end.x - 48;
-        };
-        algoDijkstra(end, targetDrive, start);
-        if (end.y < 550)
-        {
-            end.y = end.y + 48;
-        }
-        algoDijkstra(end, targetDrive, start);
+
         /* if (end.y > 150)
         {
             end.y = end.y - 48;
         }
         algoDijkstra(end, targetDrive, start);
 */
-        delta = passenger[passengerNumber].position - car.position;
-        if ((fabs(round(delta.x)) <= 60) && (fabs(round(delta.y)) <= 60))
+        for (passengerNumber = 0; (passengerNumber < 100) && (car.withAPassenger != 1); ++passengerNumber)
         {
-            car.passengerMoney = passenger[passengerNumber].money;
-            car.passengerNumber = passengerNumber;
-            car.withAPassenger = 1;
-            passenger[car.passengerNumber].activation = 2;
+            if (passenger[passengerNumber].activation == 1)
+            {
+                delta = passenger[passengerNumber].position - car.position;
+                if ((fabs(round(delta.x)) <= 60) && (fabs(round(delta.y)) <= 60))
+                {
+                    car.passengerMoney = passenger[passengerNumber].money;
+                    car.passengerNumber = passengerNumber;
+                    car.withAPassenger = 1;
+                    passenger[car.passengerNumber].activation = 2;
+                }
+            }
         };
+
         if (car.availabilityOil == 1)
         {
             car.availabilityOil = 0;
@@ -101,6 +113,7 @@ void algoCarLogica(car &car, sf::Vector2i &targetDrive, passenger passenger[], d
     {
         start = car.position;
         end = {25, 125};
+
         algoDijkstra(end, targetDrive, start);
         delta = destination.position - car.position;
         if ((fabs(round(delta.x)) <= 50) && (fabs(round(delta.y)) <= 50))
@@ -111,8 +124,9 @@ void algoCarLogica(car &car, sf::Vector2i &targetDrive, passenger passenger[], d
             car.withAPassenger = 0;
         };
     };
+
     str = std::to_string(car.money);
-    str = "Schumacher:" + str + "$";
+    str = "SmartTaxi:" + str + "$";
     if (car.availabilityOil == 1)
     {
         str = str + " OIL";

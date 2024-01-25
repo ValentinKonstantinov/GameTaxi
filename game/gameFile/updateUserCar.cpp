@@ -8,7 +8,10 @@ void updateUserCar(car &userCar, car &userCar2, float time, char &keyPressed, ob
     }
     else
     {
-        userCar.speed = 100;
+        if (userCar.speed < 100)
+        {
+            userCar.speed = 100;
+        }
     };
     float T = userCar.speed * time;
     float distanceCarPassenger = 20;

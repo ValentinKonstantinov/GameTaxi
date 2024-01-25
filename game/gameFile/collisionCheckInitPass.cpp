@@ -62,12 +62,44 @@ void collisionCheckInitOil(oilStruct &oil, obstruction arreyObstruction[])
     }
 };
 
+void collisionCheckInitPetrol(petrolStruct &petrol, obstruction arreyObstruction[])
+{
+    sf::Vector2f coordinatesObstr, coordinatesCar;
+    petrol.collision = 0;
+    if ((petrol.position.x < 10) || (petrol.position.x > 790) || (petrol.position.y < 100) || (petrol.position.y > 590))
+    {
+        petrol.collision = 0;
+    }
+    else
+    {
+        float carX = round(petrol.position.x);
+        float carY = round(petrol.position.y);
+        coordinatesCar = {carX, carY};
+        for (int i = 0; i <= 20; ++i)
+        {
+            for (float ObstrX = arreyObstruction[i].position.x; ObstrX <= arreyObstruction[i].position.x + arreyObstruction[i].size.x; ++ObstrX)
+            {
+
+                for (float ObstrY = arreyObstruction[i].position.y; ObstrY <= arreyObstruction[i].position.y + arreyObstruction[i].size.y; ++ObstrY)
+                {
+                    coordinatesObstr = {ObstrX, ObstrY};
+                    if ((coordinatesCar.x == coordinatesObstr.x) && (coordinatesCar.y == coordinatesObstr.y))
+                    {
+                        petrol.collision = 1;
+                    }
+                }
+            }
+        }
+    }
+};
+
 void collisionCarAndUserCar(car &userCar, bool &endGame, car &car)
 {
     float carX = car.sprite.getPosition().x;
     float carY = car.sprite.getPosition().y;
     float carUserX = userCar.sprite.getPosition().x;
     float carUserY = userCar.sprite.getPosition().y;
+    endGame = false;
     //cout << "collisionCarAndUserCar" << endl;
     //sf::Vector2f coordinatesUserCar, coordinatesCar;
     for (float i = carX; i <= carX + 40; ++i)

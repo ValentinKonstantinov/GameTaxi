@@ -217,7 +217,7 @@ void carLogica(car &car, sf::Vector2f &delta, passenger passenger[], destination
         };
     };
     str = std::to_string(car.money);
-    str = "stupidTaxi:" + str + "$";
+    str = "hardWorkingTaxi:" + str + "$";
     if (car.availabilityOil == 1)
     {
         str = str + " OIL";

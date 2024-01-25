@@ -20,15 +20,8 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include "SFML/Audio.hpp"
-#include "SFML/Audio/Music.hpp"
-#include "SFML/Audio/Listener.hpp"
+#include <SFML/Audio.hpp>
 #include <SFML/Audio/Music.hpp>
-#include <SFML/Audio/Export.hpp>
-#include <SFML/Audio/SoundStream.hpp>
-#include <SFML/Audio/InputSoundFile.hpp>
-#include <SFML/System/Mutex.hpp>
-#include <SFML/System/Time.hpp>
 #include <string>
 #include <vector>
 using namespace std;
@@ -42,7 +35,7 @@ struct levelMap
 {
     sf::Texture texture;
     sf::Sprite sprite;
-    int state = 0;
+    int state;
 };
 
 struct obstruction
@@ -57,32 +50,32 @@ struct car
     sf::Texture texture;
     sf::Vector2f size;
     sf::Sprite sprite;
-    int money = 0;
+    int money;
     sf::Vector2f position;
-    float withAPassenger = 0;
+    float withAPassenger;
     car(sf::Clock &clock)
         : clock(clock){};
     float collision;
-    int passengerNumber = -1;
-    int passengerMoney = 0;
+    int passengerNumber;
+    int passengerMoney;
     float speed;
     sf::Text menuText;
     std::string userName;
-    int availabilityOil = 0;
-    float timeOil = 0;
+    int availabilityOil;
+    float timeOil;
     char keyPressed;
-    bool activation = true;
+    bool activation;
 };
 
 struct destination
 {
     sf::Clock &clock;
     sf::Texture texture;
-    float timeDestination = 0;
+    float timeDestination;
     sf::Sprite sprite;
 
     sf::Vector2f position;
-    float rotation = 0;
+    float rotation;
 
     destination(sf::Clock &clock)
         : clock(clock)
@@ -95,14 +88,15 @@ struct passenger
     sf::Texture texture;
     float collision;
     sf::Sprite sprite;
-    int money = 0;
+    int money;
     sf::Vector2f position;
     sf::Vector2f drive;
-    float rotation = 0;
+    float rotation;
     sf::Vector2f size;
     int activation = 0;
-    int counterCollision = 0;
-    float timeDrive = 0;
+    int counterCollision;
+    float timeDrive;
+    int quantityPassenger;
 };
 struct oilStruct
 {
@@ -113,9 +107,18 @@ struct oilStruct
     float timeOil;
     float collision;
 };
+struct petrolStruct
+{
+    sf::Texture texture;
+    sf::Sprite sprite;
+    int activation;
+    sf::Vector2f position;
+    float collision;
+    float addingSpeed;
+};
 
-void redrawFrame(car &algoCar, car &userCar, car &userCar2, sf::RenderWindow &window, car &car, passenger passenger[], destination &destination, levelMap &levelMap, oilStruct &oil);
-void update(car &algoCar, car &userCar, car &userCar2, const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, char &keyPressed, car &car, passenger passenger[], destination &destination, obstruction arreyObstruction[], sf::Clock &clock, oilStruct &oil);
+void redrawFrame(car &algoCar, car &userCar, car &userCar2, sf::RenderWindow &window, car &car, passenger passenger[], destination &destination, levelMap &levelMap, oilStruct &oil, petrolStruct &petrol);
+void update(car &algoCar, car &userCar, car &userCar2, const sf::Vector2f &mousePosition, sf::Vector2f &mouseClikPosition, char &keyPressed, car &car, passenger passenger[], destination &destination, obstruction arreyObstruction[], sf::Clock &clock, oilStruct &oil, petrolStruct &petrol);
 void pollEvents(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition, char &keyPressed);
 void initDestination(destination &destination);
 void initLevel(levelMap &levelMap, obstruction arreyObstruction[]);
@@ -149,3 +152,11 @@ void algoDijkstra(sf::Vector2f end, sf::Vector2i &targetDrive, sf::Vector2f star
 void simplePathfindingAlgoritm(int ADJACENCY_MATRIX[][640], int &START, int &END, sf::Vector2i &targetDrive);
 void updateAlgoCar(car &car, float time, sf::Vector2i &targetDrive, passenger passenger[], obstruction arreyObstruction[]);
 void collisionCheckAlgoCar(car &car, obstruction arreyObstruction[]);
+void checkEndGame(bool &endGame, car &algoCar, car &userCar, car &userCar2, car &car, passenger passenger[], levelMap &levelMap, menu &endMenu);
+void initEndMenu(menu &endMenu);
+void redrawFrameEndMenu(car &algoCar, car &userCar, car &userCar2, sf::RenderWindow &window, car &car, passenger passenger[], destination &destination, levelMap &levelMap, menu &endMenu);
+void initPetrol(petrolStruct &petrol);
+void udatePetrol(car &algoCar, car &userCar, car &userCar2, petrolStruct &petrol, car &car, obstruction arreyObstruction[], float &time);
+void collisionCheckInitPetrol(petrolStruct &petrol, obstruction arreyObstruction[]);
+void collisionCheckPetrolAndCar(petrolStruct &petrol, car &car);
+void initNewGame(bool &endGame, menu &previewMenu, menu &endMenu, oilStruct &oil, petrolStruct &petrol, levelMap &levelMap, obstruction arreyObstruction[], passenger passenger[], destination &destination, car &userCar, car &userCar2, sf::Font &fontName, car &algoCar, car &car, sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition, char &keyPressed, float &time);

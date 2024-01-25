@@ -80,10 +80,10 @@ void simplePathfindingAlgoritm(int ADJACENCY_MATRIX[][640], int &START, int &END
                 }
             }
         };
-        cout << targetDrive.x << ' ' << targetDrive.y << endl;
     }
     else
     {
+        //targetDrive.x = -1;
         /*   cout << "" << START << " ~ " << i << " = "
              << "no way" << endl;*/
     };

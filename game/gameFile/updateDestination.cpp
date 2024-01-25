@@ -80,3 +80,39 @@ void udateOil(car &algoCar, car &userCar, car &userCar2, oilStruct &oil, car &ca
         oil.timeOil = 5;
     };
 };
+
+void udatePetrol(car &algoCar, car &userCar, car &userCar2, petrolStruct &petrol, car &car, obstruction arreyObstruction[], float &time)
+{
+    if (petrol.activation == 0)
+    {
+        petrol.activation = 1;
+        float pozX = 0;
+        float pozY = 0;
+        do
+        {
+            petrol.collision = 0;
+            pozX = 100 + rand() % 600;
+            pozY = 100 + rand() % 400;
+            petrol.position = {pozX, pozY};
+            collisionCheckInitPetrol(petrol, arreyObstruction);
+        } while (petrol.collision == 1);
+        petrol.sprite.setPosition(petrol.position);
+        petrol.sprite.setTextureRect(sf::IntRect(0, 0, 50, 50));
+    };
+    if (petrol.activation == 1)
+    {
+        collisionCheckPetrolAndCar(petrol, userCar);
+    };
+    if (petrol.activation == 1)
+    {
+        collisionCheckPetrolAndCar(petrol, userCar2);
+    };
+    if (petrol.activation == 1)
+    {
+        collisionCheckPetrolAndCar(petrol, car);
+    };
+    if (petrol.activation == 1)
+    {
+        collisionCheckPetrolAndCar(petrol, algoCar);
+    };
+}

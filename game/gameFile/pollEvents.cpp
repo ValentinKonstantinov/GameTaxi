@@ -49,4 +49,4 @@ void pollEventsMenu(sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf :
             break;
         }
     };
-}
+};

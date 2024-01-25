@@ -13,6 +13,7 @@ void initDestination(destination &destination)
     destination.sprite.setOrigin(sf::Vector2f(0, 80));
     destination.position = {0, 100};
     destination.sprite.setPosition(destination.position);
+    destination.timeDestination = 0;
 }
 
 void initLevel(levelMap &levelMap, obstruction arreyObstruction[])
@@ -25,7 +26,7 @@ void initLevel(levelMap &levelMap, obstruction arreyObstruction[])
     };
     levelMap.sprite.setPosition(sf::Vector2f(0, 100));
     levelMap.sprite.setTexture(Texture);
-
+    levelMap.state = 0;
     ifstream level1Obstruction;
     level1Obstruction.open(".\\level\\fileLevel1Obstruction.txt");
 
@@ -55,10 +56,15 @@ void initPassenger(passenger passenger[], obstruction arreyObstruction[])
     };
     int quantityPassenger;
     level1Passenger >> quantityPassenger;
+
     for (int i = 0; i < quantityPassenger; ++i)
     {
         float pozX, pozY;
+        passenger[i].quantityPassenger = quantityPassenger;
+        passenger[i].money = 0;
+        passenger[i].rotation = 0;
         passenger[i].activation = 1;
+        passenger[i].timeDrive = quantityPassenger;
         passenger[i].size = {20, 40};
 
         do
@@ -113,6 +119,13 @@ void initCar(car &car, sf::Font &fontName) //инициализирует стр
     car.menuText.setStyle(sf::Text::Bold);
     car.menuText.setFillColor(sf::Color::Red);
     car.menuText.setPosition(100, 0);
+    car.money = 0;
+    car.withAPassenger = 0;
+    car.passengerNumber = -1;
+    car.passengerMoney = 0;
+    car.availabilityOil = 0;
+    car.timeOil = 0;
+    car.activation = true;
 };
 
 void initUserCar(car &userCar, sf::Font &fontName) //инициализирует структуру
@@ -139,6 +152,13 @@ void initUserCar(car &userCar, sf::Font &fontName) //инициализируе�
     userCar.menuText.setStyle(sf::Text::Bold);
     userCar.menuText.setFillColor(sf::Color::Red);
     userCar.menuText.setPosition(100, 40);
+    userCar.money = 0;
+    userCar.withAPassenger = 0;
+    userCar.passengerNumber = -1;
+    userCar.passengerMoney = 0;
+    userCar.availabilityOil = 0;
+    userCar.timeOil = 0;
+    userCar.activation = true;
 };
 
 void initOilStruct(oilStruct &oil)
@@ -163,4 +183,67 @@ void initPreviewMenu(menu &previewMenu)
 
     previewMenu.sprite.setTexture(previewMenu.texture);
     previewMenu.sprite.setPosition(0, 0);
+};
+
+void initEndMenu(menu &endMenu)
+{
+    if (!endMenu.texture.loadFromFile(".\\texture\\endMenu.png"))
+    {
+        std::cout << "not texture endMenu" << std::endl;
+    };
+
+    endMenu.sprite.setTexture(endMenu.texture);
+    endMenu.sprite.setPosition(0, 100);
+};
+
+void initPetrol(petrolStruct &petrol)
+{
+    if (!petrol.texture.loadFromFile(".\\texture\\petrol.png"))
+    {
+        std::cout << "not texture petrol" << std::endl;
+    };
+    petrol.sprite.setTexture(petrol.texture);
+    petrol.sprite.setTextureRect(sf::IntRect(0, 0, 50, 50));
+    petrol.position = {250, 250};
+    petrol.activation = 0;
+    petrol.addingSpeed = 20;
+}
+
+void initNewGame(bool &endGame, menu &previewMenu, menu &endMenu, oilStruct &oil, petrolStruct &petrol, levelMap &levelMap, obstruction arreyObstruction[], passenger passenger[], destination &destination, car &userCar, car &userCar2, sf::Font &fontName, car &algoCar, car &car, sf::RenderWindow &window, sf ::Vector2f &mousePosition, sf ::Vector2f &mouseClikPosition, char &keyPressed, float &time)
+{
+    initPreviewMenu(previewMenu);
+    initEndMenu(endMenu);
+    initOilStruct(oil);
+    initPetrol(petrol);
+    initLevel(levelMap, arreyObstruction);
+    initPassenger(passenger, arreyObstruction);
+    initDestination(destination);
+    initUserCar(userCar, fontName);
+    userCar.speed += 20;
+    userCar.userName = "user1";
+    userCar.menuText.setString(userCar.userName);
+    initUserCar(userCar2, fontName);
+    userCar2.speed += 20;
+    userCar2.userName = "user2";
+    userCar2.menuText.setString(userCar2.userName);
+    userCar2.menuText.setPosition(500, 40);
+    initCar(car, fontName);
+    initCar(algoCar, fontName);
+    algoCar.menuText.setString("algoCar");
+    algoCar.menuText.setPosition(500, 0);
+    endGame = false;
+    keyPressed = 'x';
+    pollEventsMenu(window, mousePosition, mouseClikPosition, keyPressed);
+    if (keyPressed == 's')
+    {
+        userCar2.activation = false;
+        levelMap.state = 3;
+    }
+    else if (keyPressed == 'q')
+    {
+        levelMap.state = 3;
+    };
+    window.clear(sf::Color(255, 255, 255));
+    window.draw(previewMenu.sprite);
+    window.display();
 }
